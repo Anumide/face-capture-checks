@@ -1,0 +1,68 @@
+{
+  "name": "face-capture-checks",
+  "version": "1.0.0",
+  "description": "Framework-agnostic face image capture checks built around face-api.js types.",
+  "license": "MIT",
+  "keywords": [
+    "face-api",
+    "face-api.js",
+    "face-detection",
+    "face-capture",
+    "image-capture",
+    "image-quality",
+    "selfie",
+    "face-centered",
+    "eye-detection",
+    "lighting",
+    "sharpness",
+    "glasses-detection",
+    "camera",
+    "webcam",
+    "typescript",
+    "esm"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "packageManager": "pnpm@11.15.1",
+  "files": [
+    "dist",
+    "models",
+    "bin",
+    "README.md"
+  ],
+  "bin": {
+    "face-capture-checks-copy-models": "./bin/copy-models.mjs"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "prepack": "npm run clean && npm run build",
+    "clean": "node -e \"import('node:fs').then(({ rmSync }) => rmSync('dist', { recursive: true, force: true }))\"",
+    "prepare": "husky"
+  },
+  "peerDependencies": {
+    "face-api.js": "^0.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@vitest/coverage-v8": "^5.1.0",
+    "face-api.js": "^0.20.0",
+    "husky": "^9.1.7",
+    "typescript": "^5.6.3",
+    "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

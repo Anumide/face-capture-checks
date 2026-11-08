@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo "👀 Checking Commit message style convention..."
+
+commit_message=$(cat "$1")
+commit_style='^(revert: )?((build|ci|docs|feat|fix|perf|refactor|style|test|chore)(\(.+\))?: .{5,50}|Initial commit)'
+
+
+echo "$commit_message" | grep -Eq "$commit_style" || {
+  echo '❌ Commit message does not follow the style convention!'
+  exit 1
+}
+
+echo "✅ Commit message style convention passed!"
+
+exit 1

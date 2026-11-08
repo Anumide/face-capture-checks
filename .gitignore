@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+react-test/
+.pnpm-store/
+pnpm-store/
+.commandcode/
+commandcode/
