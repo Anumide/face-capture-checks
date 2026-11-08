@@ -12,5 +12,3 @@ echo "$commit_message" | grep -Eq "$commit_style" || {
 }
 
 echo "✅ Commit message style convention passed!"
-
-exit 1
