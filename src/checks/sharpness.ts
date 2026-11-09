@@ -1,4 +1,5 @@
 import type { FaceImageMetrics, SharpnessOptions } from '../types.js'
+import { finiteNumber } from '../validate.js'
 
 const DEFAULT_MIN_SHARPNESS = 6.5
 
@@ -7,5 +8,6 @@ export function isImageSharp(
   metrics: Pick<FaceImageMetrics, 'sharpness'>,
   options: SharpnessOptions = {}
 ): boolean {
-  return metrics.sharpness >= (options.minSharpness ?? DEFAULT_MIN_SHARPNESS)
+  const minSharpness = finiteNumber(options.minSharpness, DEFAULT_MIN_SHARPNESS)
+  return metrics.sharpness >= minSharpness
 }

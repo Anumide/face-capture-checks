@@ -1,5 +1,5 @@
-import { execFileSync } from 'node:child_process'
-import { readdirSync, mkdtempSync, rmSync } from 'node:fs'
+import { execFileSync, spawnSync } from 'node:child_process'
+import { readdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
@@ -26,5 +26,25 @@ describe('face-capture-checks-copy-models CLI', () => {
 
   it('succeeds when files already exist at the destination', () => {
     expect(() => execFileSync(process.execPath, [script, destination])).not.toThrow()
+  })
+
+  it('exits with usage when given a flag-like argument', () => {
+    const result = spawnSync(process.execPath, [script, '--help'], { encoding: 'utf8' })
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain('Usage')
+  })
+
+  it('exits with usage when given an empty destination argument', () => {
+    const result = spawnSync(process.execPath, [script, ''], { encoding: 'utf8' })
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain('Usage')
+  })
+
+  it('exits with a clean error when the destination exists as a file', () => {
+    const fileDestination = resolve(destination, 'not-a-directory')
+    writeFileSync(fileDestination, '')
+    const result = spawnSync(process.execPath, [script, fileDestination], { encoding: 'utf8' })
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain('face-capture-checks-copy-models:')
   })
 })

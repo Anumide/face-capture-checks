@@ -1,4 +1,5 @@
 import type { FaceImageMetrics, LightingOptions } from '../types.js'
+import { finiteNumber } from '../validate.js'
 
 const DEFAULTS = { minBrightness: 80, maxBrightness: 220 } satisfies Required<LightingOptions>
 
@@ -7,7 +8,7 @@ export function hasAdequateLighting(
   metrics: Pick<FaceImageMetrics, 'brightness'>,
   options: LightingOptions = {}
 ): boolean {
-  const minBrightness = options.minBrightness ?? DEFAULTS.minBrightness
-  const maxBrightness = options.maxBrightness ?? DEFAULTS.maxBrightness
+  const minBrightness = finiteNumber(options.minBrightness, DEFAULTS.minBrightness)
+  const maxBrightness = finiteNumber(options.maxBrightness, DEFAULTS.maxBrightness)
   return metrics.brightness >= minBrightness && metrics.brightness <= maxBrightness
 }

@@ -58,7 +58,7 @@ const checks = {
 
 Import only the checks you need; the package is side-effect free, so bundlers tree-shake the rest.
 
-The pixel-based helpers accept an optional reusable `HTMLCanvasElement` to avoid creating a canvas for each analysis. Supply configurable thresholds through each check's options. `detectGlasses` is a pixel heuristic based on dark regions, contrast, and edges around the eyes; it is not a glasses-classification model.
+The pixel-based helpers accept an optional reusable `HTMLCanvasElement` to avoid creating a canvas for each analysis. Supply configurable thresholds through each check's options. `detectGlasses` is a pixel heuristic based on dark regions, contrast, and edges around the eyes; it is not a glasses-classification model, and it reads nose-bridge landmark points 27–30, so it assumes a full 68-point landmark set.
 
 ## Testing
 
@@ -76,4 +76,4 @@ npm install
 npm run build
 ```
 
-The build emits ESM JavaScript and TypeScript declarations under `dist/`. `face-api.js` is a peer dependency and its detection/landmark types are used in the public API. The included model files are packed with the npm package, so the copy command uses the installed files and does not download them.
+The build emits ESM JavaScript and TypeScript declarations under `dist/`. `face-api.js` is a peer dependency and its detection/landmark types are used in the public API. Note that the upstream `face-api.js` repository has been unmaintained since 2020; the API-compatible fork [`@vladmandic/face-api`](https://github.com/vladmandic/face-api) is a maintained drop-in alternative. The included model files are packed with the npm package, so the copy command uses the installed files and does not download them.

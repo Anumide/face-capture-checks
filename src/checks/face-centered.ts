@@ -1,5 +1,6 @@
 import type { FaceDetection } from 'face-api.js'
 import type { FaceBox, FaceCenteredOptions, FrameSize } from '../types.js'
+import { finiteNumber } from '../validate.js'
 
 const DEFAULTS = {
   centerTolerance: 0.15,
@@ -14,9 +15,9 @@ export function isFaceCentered(
   options: FaceCenteredOptions = {}
 ): boolean {
   const box = 'box' in detection ? detection.box : detection
-  const centerTolerance = options.centerTolerance ?? DEFAULTS.centerTolerance
-  const minFaceWidthRatio = options.minFaceWidthRatio ?? DEFAULTS.minFaceWidthRatio
-  const maxFaceWidthRatio = options.maxFaceWidthRatio ?? DEFAULTS.maxFaceWidthRatio
+  const centerTolerance = finiteNumber(options.centerTolerance, DEFAULTS.centerTolerance)
+  const minFaceWidthRatio = finiteNumber(options.minFaceWidthRatio, DEFAULTS.minFaceWidthRatio)
+  const maxFaceWidthRatio = finiteNumber(options.maxFaceWidthRatio, DEFAULTS.maxFaceWidthRatio)
 
   const faceCenterX = box.x + box.width / 2
   const faceCenterY = box.y + box.height / 2

@@ -18,12 +18,19 @@ export function analyzeFaceImage(
   box: FaceBox,
   options: FaceImageAnalysisOptions = {}
 ): FaceImageMetrics {
-  const sampleSize = options.sampleSize ?? 60
+  const requestedSize = Math.trunc(options.sampleSize ?? 60)
   const canvas = options.canvas ?? createCanvas()
   const context = canvas.getContext('2d')
-  if (!context || !video.videoWidth || !video.videoHeight || sampleSize < 3) {
+  if (
+    !context
+    || !video.videoWidth
+    || !video.videoHeight
+    || !Number.isFinite(requestedSize)
+    || requestedSize < 3
+  ) {
     return { brightness: 120, sharpness: 10 }
   }
+  const sampleSize = Math.min(requestedSize, 512)
 
   const x = Math.max(0, box.x)
   const y = Math.max(0, box.y)

@@ -86,6 +86,19 @@ describe('detectGlasses', () => {
     expect(detectGlasses(video(), landmarks(), { canvas: makeCanvas(data) })).toBe(true)
   })
 
+  it('is false when positions lack the nose-bridge points', () => {
+    const canvas = makeCanvas(verticalStripePixels(80, 32, 2, 0, 255))
+    const shortPositions = Array.from({ length: 10 }, (_, index) => point(index, index))
+    const shortLandmarks = makeLandmarks(landmarks().getLeftEye(), landmarks().getRightEye(), shortPositions)
+    expect(detectGlasses(video(), shortLandmarks, { canvas })).toBe(false)
+  })
+
+  it('falls back to default sample dimensions when they are not finite', () => {
+    const canvas = makeCanvas(verticalStripePixels(80, 32, 2, 0, 255))
+    const options = { canvas, sampleWidth: Number.NaN, sampleHeight: Number.NaN }
+    expect(detectGlasses(video(), landmarks(), options)).toBe(true)
+  })
+
   it('throws in non-DOM environments without an injected canvas', () => {
     expect(() => detectGlasses(video(), landmarks())).toThrow(
       'Glasses detection requires a browser canvas or a supplied canvas.'

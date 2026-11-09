@@ -27,8 +27,10 @@ export function detectGlasses(
   const context = canvas.getContext('2d')
   if (!context) return false
 
-  const sampleWidth = options.sampleWidth ?? 80
-  const sampleHeight = options.sampleHeight ?? 32
+  const requestedWidth = Math.trunc(options.sampleWidth ?? 80)
+  const requestedHeight = Math.trunc(options.sampleHeight ?? 32)
+  const sampleWidth = Number.isFinite(requestedWidth) ? Math.min(requestedWidth, 1024) : 80
+  const sampleHeight = Number.isFinite(requestedHeight) ? Math.min(requestedHeight, 256) : 32
   const eyePoints = [...landmarks.getLeftEye(), ...landmarks.getRightEye()]
   if (eyePoints.length === 0) return false
 
@@ -37,6 +39,7 @@ export function detectGlasses(
   const maxX = Math.min(video.videoWidth, Math.max(...eyePoints.map(({ x }) => x)) + 10)
   const maxY = Math.min(video.videoHeight, Math.max(...eyePoints.map(({ y }) => y)) + 20)
   const positions = landmarks.positions
+  if (positions.length < 31) return false
   const noseBridgeMinY = Math.min(positions[27].y, positions[28].y, positions[29].y, positions[30].y)
   const regionY = Math.max(0, Math.min(minY, noseBridgeMinY))
   const regionWidth = maxX - minX

@@ -60,6 +60,13 @@ describe('analyzeFaceImage', () => {
     })
   })
 
+  it('falls back to permissive metrics when sampleSize is not finite', () => {
+    expect(analyze(solidPixels(8, 8, 60, 60, 60), { sampleSize: Number.NaN })).toEqual({
+      brightness: 120,
+      sharpness: 10
+    })
+  })
+
   it('falls back to permissive metrics when the box lies entirely outside the frame', () => {
     const metrics = analyze(solidPixels(8, 8, 60, 60, 60), {
       box: { x: 700, y: 0, width: 100, height: 100 }
