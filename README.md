@@ -58,6 +58,43 @@ const checks = {
 
 Import only the checks you need; the package is side-effect free, so bundlers tree-shake the rest.
 
+## Blink and liveness checks
+
+Blink and liveness checks keep state across camera frames, so create one detector for each capture session and call `reset()` when starting over. Calibration uses centered frames before asking the user to blink or turn their head.
+
+```ts
+import {
+  areEyesVisible,
+  createBlinkDetector,
+  createLivenessDetector,
+  isFaceCentered
+} from 'face-capture-checks'
+
+const blinkCheck = createBlinkDetector()
+const livenessCheck = createLivenessDetector()
+
+// Call once for each detected face/frame from face-api.js.
+const frame = { width: video.videoWidth, height: video.videoHeight }
+const centered = isFaceCentered(face.detection, frame)
+const blink = blinkCheck.update(face.landmarks, {
+  isCentered: centered,
+  timestamp: performance.now()
+})
+const liveness = livenessCheck.update({
+  face: face.detection,
+  landmarks: face.landmarks,
+  frame,
+  eyesOpen: areEyesVisible(face.landmarks),
+  blinkDetected: blink.detected
+})
+
+if (liveness.verified && liveness.facingForward) {
+  // Both the blink and head movement were observed; the face has returned forward.
+}
+```
+
+`createBlinkDetector` reports calibration, open, closed, and detected states and accepts optional EAR ratios and timing thresholds. `createLivenessDetector` tracks a neutral-pose baseline, smoothed head yaw, head movement, and return to a forward pose. These checks provide capture-flow signals; they are not a presentation-attack detector and do not guarantee protection from photo or video replay.
+
 The pixel-based helpers accept an optional reusable `HTMLCanvasElement` to avoid creating a canvas for each analysis. Supply configurable thresholds through each check's options. `detectGlasses` is a pixel heuristic based on dark regions, contrast, and edges around the eyes; it is not a glasses-classification model, and it reads nose-bridge landmark points 27–30, so it assumes a full 68-point landmark set.
 
 ## Testing

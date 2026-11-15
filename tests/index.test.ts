@@ -5,6 +5,8 @@ const expectedExports = [
   'analyzeFaceImage',
   'areEyesVisible',
   'calculateEyeAspectRatio',
+  'createBlinkDetector',
+  'createLivenessDetector',
   'detectGlasses',
   'hasAdequateLighting',
   'isFaceCentered',

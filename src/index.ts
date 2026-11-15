@@ -2,10 +2,25 @@ export { isFaceCentered } from './checks/face-centered.js'
 export { areEyesVisible, calculateEyeAspectRatio } from './checks/eyes-visible.js'
 export { hasAdequateLighting } from './checks/lighting.js'
 export { isImageSharp } from './checks/sharpness.js'
+export { createBlinkDetector } from './checks/blink.js'
+export { createLivenessDetector } from './checks/liveness.js'
 export { detectGlasses } from './checks/glasses.js'
 export { analyzeFaceImage } from './analysis/face-image.js'
 export type { FaceImageAnalysisOptions } from './analysis/face-image.js'
 export type { GlassesDetectionOptions } from './checks/glasses.js'
+export type {
+  BlinkDetector,
+  BlinkDetectorOptions,
+  BlinkResult,
+  BlinkSampleOptions,
+  BlinkStatus
+} from './checks/blink.js'
+export type {
+  LivenessDetector,
+  LivenessDetectorOptions,
+  LivenessResult,
+  LivenessSample
+} from './checks/liveness.js'
 export type {
   FaceBox,
   FaceCenteredOptions,

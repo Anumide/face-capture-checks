@@ -1,6 +1,6 @@
 {
   "name": "face-capture-checks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Framework-agnostic face image capture checks built around face-api.js types.",
   "license": "MIT",
   "repository": {
